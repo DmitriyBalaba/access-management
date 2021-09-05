@@ -3,12 +3,9 @@ package main
 import "github.com/casbin/casbin"
 
 func main() {
-	e,_:= InitApp()
-	e.Print()
+	e, _ := InitApp()
+	e.Run()
 }
-
-
-
 
 func NewEnforcer(d Data) *casbin.Enforcer {
 	//return casbin.NewEnforcer("./rbac.conf", "./rbac_policy.csv")
@@ -24,13 +21,13 @@ func Save(e *casbin.Enforcer, d Data) (*casbin.Enforcer, error) {
 }
 
 func New() Data {
-	return  Data{
+	return Data{
 		Conf:   "rbac.conf",
 		Policy: "rbac_policy.csv",
 	}
 }
 
 type Data struct {
-	Conf string
+	Conf   string
 	Policy string
 }

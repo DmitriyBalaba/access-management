@@ -1,6 +1,7 @@
-package models
+package config
 
 import (
+	"access-management/pkg/config/server"
 	"github.com/pkg/errors"
 	"gopkg.in/go-playground/validator.v9"
 	"gopkg.in/yaml.v2"
@@ -9,20 +10,20 @@ import (
 	"path"
 )
 
-
 type Config struct {
-	AppName      *string `yaml:"app-name"`
-	SessionStore string `yaml:"session-store"`
-	Database string `yaml:"database"`
-	Resources string `yaml:"resources"`
-	Email string `yaml:"email"`
+	WebApi       *server.Config `yaml:"webapi" validate:"required"`
+	AppName      *string        `yaml:"app-name"`
+	SessionStore string         `yaml:"session-store"`
+	Database     string         `yaml:"database"`
+	Resources    string         `yaml:"resources"`
+	Email        string         `yaml:"email"`
 }
 
 func NewConfig() (*Config, error) {
-	filePath := path.Base(os.Args[0]) + ".yaml"
+	filePath := path.Base(os.Args[1]) + ".yaml"
 	file, err := os.Open(filePath)
 	if err != nil {
-		return  nil, err
+		return nil, err
 	}
 	defer CheckCloseError(file, &err)
 
@@ -47,4 +48,11 @@ func CheckCloseError(c io.Closer, err *error) {
 	if closeErr != nil && *err == nil {
 		*err = errors.Wrap(closeErr, "can't close")
 	}
+}
+
+func (c *Config) Server() *server.Config {
+	if c == nil || c.WebApi == nil {
+		panic("failed: config is empty ")
+	}
+	return c.WebApi
 }

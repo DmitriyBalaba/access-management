@@ -1,4 +1,8 @@
 app-name: aaa
+webapi:
+  port: 7080
+  graceful-timeout: 5
+
 session-store: bbb
 database: ccc
 resources: ddd

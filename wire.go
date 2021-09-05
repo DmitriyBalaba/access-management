@@ -3,14 +3,27 @@
 package main
 
 import (
-	"access-management/models"
+	"access-management/pkg/config"
+	"access-management/pkg/domain/db/psql"
+	"access-management/pkg/domain/user"
+	"access-management/pkg/domain/user/delivery/http"
+	"access-management/pkg/domain/user/repository"
+	"access-management/pkg/domain/user/service"
+	"access-management/pkg/server"
 	"github.com/google/wire"
 )
 
-func InitApp() (*models.DB, error) {
+// wire.go
+
+func InitApp() (*server.Server, error) {
 	wire.Build(
-		models.NewConfig,
-		models.NewDB,
+		config.NewConfig,
+		psql.NewDB,
+		repository.User,
+		service.User,
+		http.User,
+		user.HttpUserRouters,
+		server.NewServer,
 	)
-	return &models.DB{}, nil  // These return values are ignored.
+	return &server.Server{}, nil // These return values are ignored.
 }
