@@ -2,12 +2,12 @@ package config
 
 import (
 	"access-management/pkg/config/server"
+	"io"
+	"os"
+
 	"github.com/pkg/errors"
 	"gopkg.in/go-playground/validator.v9"
 	"gopkg.in/yaml.v2"
-	"io"
-	"os"
-	"path"
 )
 
 type Config struct {
@@ -19,9 +19,8 @@ type Config struct {
 	Email        string         `yaml:"email"`
 }
 
-func NewConfig() (*Config, error) {
-	filePath := path.Base(os.Args[1]) + ".yaml"
-	file, err := os.Open(filePath)
+func NewConfig(configPath string) (*Config, error) {
+	file, err := os.Open(configPath)
 	if err != nil {
 		return nil, err
 	}

@@ -2,6 +2,7 @@ app-name: aaa
 webapi:
   port: 7080
   graceful-timeout: 5
+  path-prefix: v1
 
 session-store: bbb
 database: ccc

@@ -2,8 +2,12 @@ package http
 
 import (
 	"access-management/pkg/domain/user"
+	"access-management/pkg/server"
+	"context"
 	"encoding/json"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type userDelivery struct {
@@ -11,7 +15,16 @@ type userDelivery struct {
 }
 
 func User(userService user.Service) user.Delivery {
-	return &userDelivery{userService: userService}
+	d := &userDelivery{userService: userService}
+	server.AddRouteInitializer(func(r *mux.Router, ctx context.Context) {
+
+		server.NewRoute(r, "/users", d.Get).
+			Methods(http.MethodGet)
+
+		server.NewRoute(r, "/users/a", d.Get).
+			Methods(http.MethodGet)
+	})
+	return d
 }
 
 func (u userDelivery) Get(w http.ResponseWriter, r *http.Request) error {
@@ -29,8 +42,4 @@ func (u userDelivery) Get(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 	return nil
-}
-
-func newUserDelivery(userService user.Service) *userDelivery {
-	return &userDelivery{userService: userService}
 }

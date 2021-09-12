@@ -1,20 +1,20 @@
 package service
 
 import (
-	"access-management/models"
 	"access-management/pkg/domain/user"
+	"access-management/pkg/models"
 )
 
 type userService struct {
-	repo user.Repository
+	userGateway user.Gateway
 }
 
-func User(repo user.Repository) user.Service {
+func User(userGateway user.Gateway) user.Service {
 	return &userService{
-		repo: repo,
+		userGateway: userGateway,
 	}
 }
 
 func (s *userService) Get() (models.User, error) {
-	return s.repo.Get()
+	return s.userGateway.Get()
 }

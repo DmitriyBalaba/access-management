@@ -5,14 +5,15 @@ import (
 	"access-management/pkg/config/server"
 	"context"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/justinas/alice"
-	"github.com/rs/zerolog/log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/justinas/alice"
+	"github.com/rs/zerolog/log"
 )
 
 type Server struct {
@@ -20,13 +21,12 @@ type Server struct {
 	config *server.Config
 }
 
-func NewServer(config *config.Config, routers []RouteInitializer) *Server {
+func NewServer(config *config.Config) *Server {
 	fmt.Println("go to server")
 	if config == nil {
 		panic("cannot create new server with nil config")
 	}
 	fmt.Println("config exists server")
-	routeInitializers = routers
 	return &Server{
 		Server: &http.Server{
 			Addr: ":" + strconv.Itoa(config.Server().Port),
@@ -112,7 +112,7 @@ func (s *Server) NewRouter(ctx context.Context) *mux.Router {
 
 	r := mux.NewRouter()
 	if p := s.config.PathPrefix; p != "" {
-		r = r.PathPrefix(p).Subrouter()
+		r = r.PathPrefix("/" + p).Subrouter()
 	}
 
 	for i := range routeInitializers {
