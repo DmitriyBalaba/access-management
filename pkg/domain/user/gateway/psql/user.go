@@ -20,7 +20,7 @@ func (r *userGateway) Get() (models.User, error) {
 	r.db.Print()
 	return models.User{
 		ID:   11,
-		Name: "Naaaa",
+		Name: "User name",
 		Company: &models.Company{
 			ID:   1,
 			Name: "JazzServe",

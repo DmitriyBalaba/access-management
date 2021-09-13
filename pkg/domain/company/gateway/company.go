@@ -18,7 +18,7 @@ func Company(db *psql2.DB) company.Gateway {
 
 func (r *companyGateway) Get() (models.Company, error) {
 	r.db.Print()
-	return models.Company{ID: 11, Name: "Naaaa"}, nil
+	return models.Company{ID: 11, Name: "Company name"}, nil
 }
 
 func (r *companyGateway) Create(c *models.Company) error {
